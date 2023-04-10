@@ -88,8 +88,8 @@ async def run_workers(workers: int, path: str) -> None:
     tasks = [open_page(path) for _ in range(workers)]
     files = await asyncio.gather(*tasks)
 
-    for num, f_path in enumerate(files):
-        await save_data(num, f_path)
+    tasks_save = [save_data(num, f_path) for num, f_path in enumerate(files)]
+    await asyncio.gather(*tasks_save)
 
 
 if __name__ == "__main__":
